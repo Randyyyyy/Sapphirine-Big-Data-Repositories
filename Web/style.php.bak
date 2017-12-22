@@ -1,0 +1,29 @@
+<?php
+$connection = mysqli_connect('localhost','root','1234','user');
+
+$option = isset($_POST['Style']) ? $_POST['Style'] : false;
+if ($option) 
+{
+	$con="Insert into user.tmp SELECT name FROM user.music where";
+	$s="";
+	foreach ($option as $t)
+	{
+		$s=$s." style="."'".$t."'"." "."or";
+	}
+	mysqli_query($connection,"drop table if exists tmp");
+	mysqli_query($connection,"CREATE TABLE `user`.`tmp` (`name` VARCHAR(45) NOT NULL,PRIMARY KEY(`name`));");
+	$query=$con.$s;
+	$query=substr($query,0,strlen($query)-3);
+	mysqli_query($connection,$query);
+	header('Location:recommendation.php');
+
+} 
+else 
+{
+     echo "task option is required";
+     $message = "Please select something!";
+     echo "<script type='text/javascript'>alert('$message');</script>";
+     echo " <script type='text/javascript'>history.back();</script>";
+     exit; 
+}
+?>
